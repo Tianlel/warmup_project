@@ -13,15 +13,15 @@ class PersonFollower(object):
         rospy.sleep(1)
         self.sensor = rospy.Subscriber('/scan', LaserScan, self.process_scan)
         self.move = Twist(
-            linear = Vector3(x=1,y=0,z=0),
+            linear = Vector3(x=0,y=0,z=0),
             angular = Vector3(x=0,y=0,z=0)
         )
 
     def process_scan(self, data):
-        # find angle corresponding to the shortest distance
+        # find angle corresponding to the shortest distance to the person
         er_ang = data.ranges.index(min(data.ranges))
 
-        # proportional angle control that instructs robot face the person
+        # proportional angle control that instructs robot to face the person
         if er_ang < 180:
             self.move.angular.z = er_ang*0.01
         else:
